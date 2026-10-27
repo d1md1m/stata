@@ -433,7 +433,7 @@
       p.append(
         mk(MD.int(all.videos), 'videos', MD.ALL), document.createTextNode(' роликов на ' + plats.length + ' площадках набрали '),
         mk(MD.compact(all.views), 'views', MD.ALL), document.createTextNode(' просмотров. Больше всего — на ' + lead.platform + ': '),
-        mk(MD.compact(lead.views), 'views', lead.platform), document.createTextNode(' (' + Math.round(lead.views / all.views * 100) + '%).')
+        mk(MD.compact(lead.views), 'views', lead.platform), document.createTextNode(' (' + (lead.views / all.views * 100).toFixed(1).replace('.', ',') + '%).')
       );
     }
     // tiles
@@ -443,7 +443,7 @@
       t.classList.remove('dash-skeleton');
       t.dataset.where = 'platform=' + MD.enc(sel);
       const k = t.dataset.k;
-      t.textContent = cur ? MD.compact(cur[k]) : '—';
+      t.textContent = cur ? MD.int(cur[k]) : '—';
       const d = t.parentElement.querySelector('.md-delta');
       d.classList.remove('md-up');
       d.removeAttribute('data-source'); d.removeAttribute('data-field'); d.removeAttribute('data-where');
@@ -477,7 +477,7 @@
       .attr('opacity', (d) => sel === MD.ALL || d.platform === sel ? 1 : 0.35);
     g.append('text').attr('x', 0).attr('y', 14).attr('fill', 'var(--color-fg)').attr('font-size', 13).text((d) => d.platform);
     g.append('text').attr('x', W).attr('y', 14).attr('text-anchor', 'end').attr('fill', 'var(--color-fg-muted)').attr('font-size', 12)
-      .text((d) => MD.compact(d.views) + ' · ' + Math.round(d.views / total * 100) + '% · ' + MD.int(d.videos) + ' роликов');
+      .text((d) => MD.int(d.views) + ' · ' + (d.views / total * 100).toFixed(1).replace('.', ',') + '% · ' + MD.int(d.videos) + ' роликов');
     g.append('rect').attr('x', 0).attr('y', 22).attr('height', 22).attr('rx', 4).attr('fill', 'var(--cds-chart-grid)').attr('width', W);
     g.append('rect').attr('x', 0).attr('y', 22).attr('height', 22).attr('rx', 4).attr('fill', (d) => MD.color(d.platform)).attr('width', (d) => Math.max(2, x(d.views)));
     // Shrink the right label if it would meet the platform name
