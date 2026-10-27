@@ -468,7 +468,7 @@
     const probe = svg.append('text').attr('font-size', 11);
     const leftM = d3.max(ticks, (t) => { probe.text(MD.compact(t)); return probe.node().getComputedTextLength(); }) + 8;
     probe.remove();
-    const endLabels = series.map(([p, rs]) => p + ' ' + MD.compact(rs[rs.length - 1].views));
+    const endLabels = series.filter((sr) => !sr[3]).map(([p, rs]) => p + ' ' + MD.compact(rs[rs.length - 1].views));
     const probe2 = svg.append('text').attr('font-size', 11);
     const rightM = d3.max(endLabels, (t) => { probe2.text(t); return probe2.node().getComputedTextLength(); }) + 10;
     probe2.remove();
@@ -483,7 +483,7 @@
       svg.append('path').attr('d', line(rs)).attr('fill', 'none').attr('stroke', MD.color(plat)).attr('stroke-width', 2).attr('stroke-dasharray', dashed ? '5 4' : null).attr('stroke-linecap', dashed ? 'butt' : 'round').attr('stroke-linejoin', 'round');
       if (!dashed) svg.append('g').selectAll('circle').data(rs).join('circle').attr('cx', (r) => x(parse(r.snapshot))).attr('cy', (r) => y(r.views)).attr('r', 3).attr('fill', MD.color(plat));
       const last = rs[rs.length - 1];
-      ends.push({ p: plat, y: y(last.views), text: name + ' ' + MD.compact(last.views) });
+      if (!dashed) ends.push({ p: plat, y: y(last.views), text: name + ' ' + MD.compact(last.views) });
     }
     ends.sort((a, b) => a.y - b.y);
     for (let i = 1; i < ends.length; i++) if (ends[i].y - ends[i - 1].y < 14) ends[i].y = ends[i - 1].y + 14;
