@@ -1,0 +1,623 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Рассказы из русской истории — статистика лекций</title>
+<meta name="description" content="Статистика лекций Владимира Мединского «Рассказы из русской истории» на YouTube, Rutube и VK Видео: просмотры, лайки, комментарии, динамика. Обновляется еженедельно.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Lora:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --font-anthropic-sans: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, Arial, sans-serif;
+    --font-anthropic-serif: 'Lora', Georgia, 'Times New Roman', serif;
+    --cds-font-size-caption: 0.8125rem;
+    --cds-font-size-body: 0.9375rem;
+    --cds-font-size-heading: 1.0625rem;
+    --cds-font-size-title: 1.875rem;
+    --cds-font-weight-medium: 500;
+    --cds-gap-xs: 4px; --cds-gap-sm: 8px; --cds-gap-md: 16px; --cds-gap-lg: 24px; --cds-gap-xl: 32px;
+    --cds-pad-xs: 4px; --cds-pad-sm: 8px; --cds-pad-md: 12px; --cds-pad-lg: 24px; --cds-pad-xl: 32px;
+    --cds-radius: 10px;
+    --cds-dur-slow: 300ms;
+    --color-bg: #f8f7f4;
+    --color-panel: #ffffff;
+    --color-fg: #1f1e1c;
+    --color-fg-muted: #75736e;
+    --color-border-line: #e6e3dd;
+    --color-ok: #2f8a57;
+    --color-warn: #b7791f;
+    --color-bad: #c2412d;
+    --cds-chart-grid: #ecebe7;
+    --cds-chart-axis: #b9b6af;
+    --cds-surface-popover: #ffffff;
+    --cds-border: #e2dfd8;
+    --cds-shadow-popover: 0 4px 16px rgba(0, 0, 0, .10);
+    --cds-text-secondary: #75736e;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --color-bg: #1c1b19;
+      --color-panel: #262523;
+      --color-fg: #ecebe7;
+      --color-fg-muted: #a3a09a;
+      --color-border-line: #3a3936;
+      --color-ok: #5cc28a;
+      --color-bad: #e8735e;
+      --cds-chart-grid: #34332f;
+      --cds-chart-axis: #5d5b56;
+      --cds-surface-popover: #2e2d2a;
+      --cds-border: #45433f;
+      --cds-shadow-popover: 0 4px 16px rgba(0, 0, 0, .45);
+      --cds-text-secondary: #a3a09a;
+    }
+  }
+  html, body { margin: 0; background: var(--color-bg); color: var(--color-fg); font-family: var(--font-anthropic-sans); -webkit-text-size-adjust: 100%; }
+  #dash-root { --dash-gutter: 16px; max-width: 1400px; margin: 0 auto; padding: 24px var(--dash-gutter) 40px; box-sizing: border-box; }
+  @media (min-width: 900px) { #dash-root { --dash-gutter: 32px; } }
+  #dash-root *, #dash-root *::before, #dash-root *::after { box-sizing: border-box; }
+  .dash-skeleton { color: transparent !important; background: var(--cds-chart-grid); border-radius: 6px; min-width: 4ch; display: inline-block; }
+  .site-footer { max-width: 1400px; margin: 0 auto; padding: 0 var(--dash-gutter, 16px) 32px; color: var(--color-fg-muted); font-family: var(--font-anthropic-sans); font-size: 0.8125rem; line-height: 1.5; }
+  @media (min-width: 900px) { .site-footer { padding: 0 32px 32px; } }
+</style>
+<script src="assets/d3.min.js"></script>
+<script src="assets/dash-shim.js"></script>
+</head>
+<body>
+<div id="dash-root">
+<style>
+  #dash-root { --dash-gutter: var(--cds-pad-lg); }
+  .md { font-family: var(--font-anthropic-sans); color: var(--color-fg); display: flex; flex-direction: column; gap: var(--cds-gap-lg); }
+  .md-head .md-h1 { font-family: var(--font-anthropic-serif); font-weight: 400; font-size: var(--cds-font-size-title); margin: 0 0 var(--cds-gap-xs); }
+  .md-head p { margin: 0; color: var(--color-fg-muted); font-size: var(--cds-font-size-body); max-width: 60rem; }
+  .md-head b { font-weight: var(--cds-font-weight-medium); color: var(--color-fg); }
+  .md-filter { display: flex; flex-wrap: wrap; gap: var(--cds-gap-xs); }
+  .md-chip { font: inherit; font-size: var(--cds-font-size-caption); padding: var(--cds-pad-xs) var(--cds-pad-md); border-radius: 999px; border: 1px solid var(--color-border-line); background: var(--color-panel); color: var(--color-fg); cursor: pointer; display: inline-flex; align-items: center; gap: var(--cds-gap-xs); }
+  .md-chip[aria-pressed="true"] { background: var(--color-fg); color: var(--color-bg); border-color: var(--color-fg); }
+  .md-dot { width: .5rem; height: .5rem; border-radius: 50%; display: inline-block; }
+  .md-tiles { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 11rem), 1fr)); gap: var(--cds-gap-md); }
+  .md-tile, .md-card { background: var(--color-panel); border: 1px solid var(--color-border-line); border-radius: var(--cds-radius); padding: var(--cds-pad-lg); min-width: 0; }
+  .md-tile .md-label { font-size: var(--cds-font-size-caption); color: var(--color-fg-muted); }
+  .md-tile .md-big { font-family: var(--font-anthropic-serif); font-weight: 400; font-size: var(--cds-font-size-title); font-variant-numeric: tabular-nums; margin: var(--cds-gap-xs) 0; line-height: 1.15; }
+  .md-tile .md-delta { font-size: var(--cds-font-size-caption); color: var(--color-fg-muted); font-variant-numeric: tabular-nums; }
+  .md-delta.md-up { color: var(--color-ok); }
+  .md-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 24rem), 1fr)); gap: var(--cds-gap-md); }
+  .md-card .md-ct { font-size: var(--cds-font-size-heading); font-weight: var(--cds-font-weight-medium); margin: 0; }
+  .md-card .md-note { font-size: var(--cds-font-size-caption); color: var(--color-fg-muted); margin: var(--cds-gap-xs) 0 var(--cds-gap-md); }
+  .md-chart { position: relative; min-height: 220px; }
+  .md-chart.md-chart-auto { min-height: 172px; }
+  .md-chart svg { display: block; overflow: visible; }
+  .md-chart text { font-family: var(--font-anthropic-sans); }
+  .md-empty { font-size: var(--cds-font-size-caption); color: var(--color-fg-muted); padding: var(--cds-pad-md) 0; }
+  .md-fail { display: flex; align-items: center; justify-content: center; gap: var(--cds-gap-xs); min-height: inherit; color: var(--color-fg-muted); font-size: var(--cds-font-size-caption); }
+  .md-fail::before { content: ""; width: .375rem; height: .375rem; border-radius: 50%; background: var(--color-bad); }
+  .md-tip { position: absolute; pointer-events: none; background: var(--cds-surface-popover); border: 1px solid var(--cds-border); border-radius: var(--cds-radius); box-shadow: var(--cds-shadow-popover); padding: var(--cds-pad-xs) var(--cds-pad-sm); font-size: var(--cds-font-size-caption); max-width: 18rem; z-index: 2; }
+  .md-tip .md-tip-h { color: var(--cds-text-secondary); margin-bottom: 2px; }
+  .md-tablebar { display: flex; flex-wrap: wrap; gap: var(--cds-gap-sm); align-items: center; margin-bottom: var(--cds-gap-md); }
+  .md-tablebar .md-count { margin-left: auto; }
+  .md-search { font: inherit; font-size: var(--cds-font-size-caption); padding: var(--cds-pad-xs) var(--cds-pad-sm); border: 1px solid var(--color-border-line); border-radius: var(--cds-radius); background: var(--color-bg); color: var(--color-fg); min-width: 0; flex: 1 1 14rem; max-width: 24rem; }
+  .md-count { font-size: var(--cds-font-size-caption); color: var(--color-fg-muted); }
+  .md-tablewrap { max-height: 600px; overflow: auto; }
+  .md-table { width: 100%; border-collapse: collapse; font-size: var(--cds-font-size-caption); font-variant-numeric: tabular-nums; }
+  .md-table th { position: sticky; top: 0; background: var(--color-panel); text-align: left; font-weight: var(--cds-font-weight-medium); border-bottom: 1px solid var(--color-border-line); padding: 0; white-space: nowrap; z-index: 1; }
+  .md-table th button { font: inherit; color: var(--color-fg-muted); background: none; border: 0; padding: var(--cds-pad-xs) var(--cds-pad-sm); cursor: pointer; width: 100%; text-align: inherit; }
+  .md-table th[aria-sort] button { color: var(--color-fg); }
+  .md-table th.md-num, .md-table td.md-num { text-align: right; }
+  .md-table td { padding: var(--cds-pad-xs) var(--cds-pad-sm); border-bottom: 1px solid var(--color-border-line); vertical-align: top; }
+  .md-table td.md-title { min-width: 16rem; }
+  .md-table a { color: var(--color-fg); text-decoration: none; }
+  .md-table a:hover { text-decoration: underline; }
+  .md-pl { display: inline-flex; align-items: center; gap: var(--cds-gap-xs); white-space: nowrap; }
+  @media (max-width: 640px) { .md-hide-narrow { display: none; } }
+  [data-dash-source-state=empty] { color: transparent; }
+  [data-dash-source-state=refreshing] { opacity: .5; transition: opacity var(--cds-dur-slow); }
+</style>
+
+<div class="md">
+  <div class="md-head" id="page-head">
+    <div class="md-h1">Рассказы из русской истории</div>
+    <p id="takeaway">
+      <span class="dash-skeleton" data-source="by_platform" data-field="videos" data-where="platform=%D0%92%D1%81%D0%B5">—</span>
+    </p>
+  </div>
+
+  <div class="md-card" id="top-card">
+    <div class="md-ct">Топ-10 роликов</div>
+    <div class="md-note" id="top-note">За всё время</div>
+    <div class="md-chart" id="top" data-source="videos"></div>
+  </div>
+
+  <div class="md-filter" id="platform-filter" role="group" aria-label="Площадка"></div>
+
+  <section class="md-tiles" id="tiles">
+    <div class="md-tile"><div class="md-label">Роликов</div><div class="md-big dash-skeleton" data-k="videos" data-source="by_platform" data-field="videos">—</div><div class="md-delta" data-d="videos"></div></div>
+    <div class="md-tile"><div class="md-label">Просмотров</div><div class="md-big dash-skeleton" data-k="views" data-source="by_platform" data-field="views">—</div><div class="md-delta" data-d="views"></div></div>
+    <div class="md-tile"><div class="md-label">Лайков</div><div class="md-big dash-skeleton" data-k="likes" data-source="by_platform" data-field="likes">—</div><div class="md-delta" data-d="likes"></div></div>
+    <div class="md-tile"><div class="md-label">Комментариев</div><div class="md-big dash-skeleton" data-k="comments" data-source="by_platform" data-field="comments">—</div><div class="md-delta" data-d="comments"></div></div>
+  </section>
+
+  <section class="md-card" id="split-card">
+    <div class="md-ct">Просмотры по площадкам</div>
+    <div class="md-note">Сумма просмотров всех роликов Мединского на каждой площадке</div>
+    <div class="md-chart md-chart-auto" id="split" data-source="by_platform"></div>
+  </section>
+
+  <section class="md-card" id="all-videos">
+    <div class="md-ct">Все ролики</div>
+    <div class="md-note">Нажмите на заголовок столбца, чтобы отсортировать</div>
+    <div class="md-tablebar">
+      <div class="md-filter" id="tbl-filter" role="group" aria-label="Площадка"></div>
+      <input class="md-search" id="q" type="search" placeholder="Поиск по названию" aria-label="Поиск по названию">
+      <span class="md-count" id="count"></span>
+    </div>
+    <div class="md-tablewrap">
+      <table class="md-table" id="tbl" data-source="videos" data-row-key="platform,id">
+        <thead><tr>
+          <th data-field="platform" data-col="platform"><button type="button">Площадка</button></th>
+          <th data-field="title" data-col="title"><button type="button">Название</button></th>
+          <th data-field="published" data-col="published" class="md-hide-narrow"><button type="button">Опубликован</button></th>
+          <th data-field="views" data-col="views" class="md-num"><button type="button">Просмотры</button></th>
+          <th data-field="likes" data-col="likes" class="md-num md-hide-narrow"><button type="button">Лайки</button></th>
+          <th data-field="comments" data-col="comments" class="md-num md-hide-narrow"><button type="button">Комментарии</button></th>
+          <th data-source="growth" data-field="views_week" data-col="views_week" class="md-num"><button type="button">За неделю</button></th>
+        </tr></thead>
+        <tbody></tbody>
+      </table>
+    </div>
+  </section>
+
+  <section class="md-card" id="trend-card">
+    <div class="md-ct">Динамика просмотров</div>
+    <div class="md-note">Накопленные просмотры по еженедельным замерам. Пунктир — история YouTube по месяцам из YouTube Studio: в ней все 204 ролика, включая доступные только по ссылке, поэтому она выше линии открытых роликов</div>
+    <div class="md-chart" id="trend" data-source="trend_all"></div>
+  </section>
+
+  <section class="md-grid">
+    <div class="md-card" id="growth-card">
+      <div class="md-ct">Быстрее всего растут</div>
+      <div class="md-note" id="growth-note">Прирост просмотров за неделю</div>
+      <div class="md-chart" id="growth" data-source="growth videos"></div>
+    </div>
+  </section>
+</div>
+
+<script>
+  window.MD = {
+    PLATFORMS: ['YouTube', 'Rutube', 'VK Видео'],
+    ALL: 'Все',
+  };
+  MD.color = (p) => dash.colors[Math.max(0, MD.PLATFORMS.indexOf(p))];
+  const loc = d3.formatLocale({ decimal: ',', thousands: ' ', grouping: [3], currency: ['', ''] });
+  MD.int = loc.format(',d');
+  MD.compact = (n) => n >= 10000 ? new Intl.NumberFormat('ru', { notation: 'compact', maximumFractionDigits: 1 }).format(n) : MD.int(n);
+  MD.signed = (n) => (n > 0 ? '+' : n < 0 ? '−' : '') + MD.compact(Math.abs(n));
+  MD.date = (s) => s ? d3.timeFormat('%d.%m.%Y')(new Date(String(s).slice(0, 10) + 'T00:00:00')) : '';
+  MD.enc = (s) => encodeURIComponent(String(s));
+  MD.sel = () => dash.params().platform || MD.ALL;
+  MD.fail = (el) => { el.replaceChildren(); const d = document.createElement('div'); d.className = 'md-fail'; d.textContent = 'Failed to load'; el.append(d); };
+  MD.empty = (el, text) => { el.replaceChildren(); const d = document.createElement('div'); d.className = 'md-empty'; d.textContent = text; el.append(d); };
+  MD.tip = (box) => { let t = box.querySelector('.md-tip'); if (!t) { t = document.createElement('div'); t.className = 'md-tip'; t.hidden = true; box.append(t); } return t; };
+  MD.showTip = (box, tip, event, head, lines) => {
+    tip.replaceChildren();
+    const h = document.createElement('div'); h.className = 'md-tip-h'; h.textContent = head; tip.append(h);
+    for (const [color, label, value] of lines) {
+      const row = document.createElement('div'); row.style.display = 'flex'; row.style.gap = '6px'; row.style.alignItems = 'center';
+      if (color) { const s = document.createElement('span'); s.className = 'md-dot'; s.style.background = color; row.append(s); }
+      const l = document.createElement('span'); l.textContent = label; row.append(l);
+      const v = document.createElement('b'); v.textContent = value; v.style.marginLeft = 'auto'; v.style.paddingLeft = '8px'; row.append(v);
+      tip.append(row);
+    }
+    tip.hidden = false;
+    const r = box.getBoundingClientRect();
+    let x = event.clientX - r.left + 12, y = event.clientY - r.top + 12;
+    const tw = tip.offsetWidth, th = tip.offsetHeight;
+    if (x + tw > r.width) x = Math.max(0, event.clientX - r.left - tw - 12);
+    if (y + th > r.height) y = Math.max(0, event.clientY - r.top - th - 12);
+    tip.style.left = x + 'px'; tip.style.top = y + 'px';
+  };
+</script>
+
+<script>
+  dash.calc('by_platform', {
+    inputs: ['videos'],
+    title: 'Итоги по площадкам',
+    description: 'Число роликов и суммы просмотров, лайков и комментариев по каждой площадке и по всем вместе.',
+    fn: (videos) => {
+      const total = (rows, platform) => ({
+        platform,
+        videos: rows.length,
+        views: rows.reduce((s, r) => s + (Number(r.views) || 0), 0),
+        likes: rows.reduce((s, r) => s + (Number(r.likes) || 0), 0),
+        comments: rows.reduce((s, r) => s + (Number(r.comments) || 0), 0),
+      });
+      const names = [...new Set(videos.map((r) => r.platform))];
+      return [total(videos, 'Все'), ...names.map((p) => total(videos.filter((r) => r.platform === p), p))];
+    },
+  });
+
+  dash.calc('trend', {
+    inputs: ['history'],
+    title: 'Суммы на каждую дату',
+    description: 'Суммы просмотров, лайков и комментариев по площадкам на дату каждого обновления.',
+    fn: (history) => {
+      const acc = {};
+      for (const r of history) {
+        for (const p of [r.platform, 'Все']) {
+          const k = r.snapshot + '|' + p;
+          acc[k] ||= { snapshot: r.snapshot, platform: p, videos: 0, views: 0, likes: 0, comments: 0 };
+          acc[k].videos += 1;
+          acc[k].views += Number(r.views) || 0;
+          acc[k].likes += Number(r.likes) || 0;
+          acc[k].comments += Number(r.comments) || 0;
+        }
+      }
+      return Object.values(acc).sort((a, b) => a.snapshot < b.snapshot ? -1 : a.snapshot > b.snapshot ? 1 : 0);
+    },
+  });
+
+  dash.calc('week', {
+    inputs: ['trend', 'vk_week'],
+    title: 'Изменение за неделю',
+    description: 'По каждой площадке — разница между двумя последними еженедельными замерами; для VK, пока таких замеров нет, — сумма из выгрузки VK Видео за 21–27.10.2026. Строка «Все» появляется, когда у всех площадок изменение посчитано за один и тот же период.',
+    fn: (trend, vk_week) => {
+      const out = [];
+      const platforms = [...new Set(trend.map((r) => r.platform))].filter((p) => p !== 'Все');
+      for (const p of platforms) {
+        const rows = trend.filter((r) => r.platform === p);
+        const dates = [...new Set(rows.map((r) => r.snapshot))].sort();
+        if (dates.length >= 2) {
+          const [prev, last] = dates.slice(-2);
+          const a = rows.find((r) => r.snapshot === prev), b = rows.find((r) => r.snapshot === last);
+          out.push({ platform: p, since: prev, videos: b.videos - a.videos, views: b.views - a.views, likes: b.likes - a.likes, comments: b.comments - a.comments });
+        } else if (p === 'VK Видео' && vk_week.length) {
+          const sum = (k) => vk_week.reduce((s, r) => s + (Number(r[k]) || 0), 0);
+          out.push({ platform: p, since: vk_week[0].period_start, videos: null, views: sum('views'), likes: sum('likes'), comments: sum('comments') });
+        }
+      }
+      if (out.length && out.length === platforms.length && out.every((r) => r.since === out[0].since && r.videos != null)) {
+        const sum = (k) => out.reduce((s, r) => s + r[k], 0);
+        out.push({ platform: 'Все', since: out[0].since, videos: sum('videos'), views: sum('views'), likes: sum('likes'), comments: sum('comments') });
+      }
+      return out;
+    },
+  });
+
+  dash.calc('trend_all', {
+    inputs: ['trend', 'yt_monthly', 'vk_week'],
+    title: 'Накопленные просмотры по датам',
+    description: 'Еженедельные замеры по площадкам; для YouTube до первого замера — накопленная сумма месячных просмотров из выгрузки YouTube Studio на конец каждого месяца; для VK — точка на 20.10.2026: первый замер минус просмотры за 21–27.10 из выгрузки VK Видео.',
+    fn: (trend, yt_monthly, vk_week) => {
+      const first = trend.filter((r) => r.platform === 'YouTube').map((r) => r.snapshot).sort()[0];
+      const months = [...yt_monthly].sort((a, b) => (a.month < b.month ? -1 : a.month > b.month ? 1 : 0));
+      const out = [];
+      let total = 0;
+      for (const m of months) {
+        total += Number(m.views) || 0;
+        const [y, mo] = String(m.month).split('-').map(Number);
+        const monthEnd = new Date(Date.UTC(y, mo, 0)).toISOString().slice(0, 10);
+        if (!first || monthEnd < first) out.push({ snapshot: monthEnd, platform: 'YouTube', series: 'YouTube · Studio', views: total, source: 'YouTube Studio' });
+      }
+      const vkRows = trend.filter((r) => r.platform === 'VK Видео').sort((a, b) => (a.snapshot < b.snapshot ? -1 : 1));
+      if (vkRows.length && vk_week.length) {
+        const start = String(vk_week[0].period_start);
+        const dayBefore = new Date(Date.parse(start + 'T00:00:00Z') - 864e5).toISOString().slice(0, 10);
+        const end = String(vk_week[0].period_end);
+        const base = vkRows.find((r) => r.snapshot === end) || vkRows[0];
+        if (vkRows[0].snapshot > dayBefore) {
+          const week = vk_week.reduce((s, r) => s + (Number(r.views) || 0), 0);
+          out.push({ snapshot: dayBefore, platform: 'VK Видео', series: 'VK Видео', views: base.views - week, source: 'выгрузка VK Видео' });
+        }
+      }
+      return out.concat(trend.map((r) => ({ snapshot: r.snapshot, platform: r.platform, series: r.platform, views: r.views, source: 'замер' })));
+    },
+  });
+
+  dash.calc('growth', {
+    inputs: ['history', 'vk_week'],
+    title: 'Прирост просмотров по роликам',
+    description: 'Сколько просмотров каждый ролик набрал между двумя последними еженедельными замерами своей площадки; для VK, пока таких замеров нет, — просмотры из выгрузки VK Видео за 21–27.10.2026.',
+    fn: (history, vk_week) => {
+      const out = [];
+      for (const p of [...new Set(history.map((r) => r.platform))]) {
+        const rows = history.filter((r) => r.platform === p);
+        const dates = [...new Set(rows.map((r) => r.snapshot))].sort();
+        if (dates.length >= 2) {
+          const [prev, last] = dates.slice(-2);
+          const before = {};
+          for (const r of rows) if (r.snapshot === prev) before[r.id] = Number(r.views) || 0;
+          for (const r of rows) if (r.snapshot === last) out.push({ platform: p, id: r.id, since: prev, views_week: r.id in before ? (Number(r.views) || 0) - before[r.id] : Number(r.views) || 0 });
+        } else if (p === 'VK Видео') {
+          for (const r of vk_week) out.push({ platform: p, id: r.id, since: r.period_start, views_week: Number(r.views) || 0 });
+        }
+      }
+      return out;
+    },
+  });
+</script>
+
+<script>
+  (() => {
+    // The same platform choice, offered at the top of the page and above the table
+    const boxes = ['platform-filter', 'tbl-filter'].map((id) => document.getElementById(id)).filter(Boolean);
+    const opts = [MD.ALL, ...MD.PLATFORMS];
+    for (const box of boxes) {
+      for (const p of opts) {
+        const b = document.createElement('button');
+        b.type = 'button'; b.className = 'md-chip'; b.dataset.p = p;
+        if (p !== MD.ALL) { const d = document.createElement('span'); d.className = 'md-dot'; d.style.background = MD.color(p); b.append(d); }
+        b.append(document.createTextNode(p === MD.ALL ? 'Все площадки' : p));
+        b.addEventListener('click', () => dash.setParams({ platform: p === MD.ALL ? null : p }));
+        box.append(b);
+      }
+    }
+    dash.onData(() => {
+      const s = MD.sel();
+      for (const box of boxes) for (const b of box.querySelectorAll('.md-chip')) b.setAttribute('aria-pressed', String(b.dataset.p === s));
+    });
+  })();
+</script>
+
+<script>
+  // Header sentence and tiles
+  dash.onData(() => {
+    const bp = dash.data('by_platform');
+    const wk = dash.data('week');
+    const sel = MD.sel();
+    const p = document.getElementById('takeaway');
+    const tiles = document.querySelectorAll('#tiles [data-k]');
+    if (bp.status !== 'ok') {
+      if (bp.status === 'error') tiles.forEach((t) => { t.classList.remove('dash-skeleton'); t.textContent = '—'; });
+      return;
+    }
+    const rows = bp.data;
+    const all = rows.find((r) => r.platform === MD.ALL);
+    const plats = rows.filter((r) => r.platform !== MD.ALL).sort((a, b) => b.views - a.views);
+    // takeaway
+    if (p) p.replaceChildren();
+    if (p && all && plats.length) {
+      const lead = plats[0];
+      const mk = (text, field, platform) => { const s = document.createElement('b'); s.dataset.source = 'by_platform'; s.dataset.field = field; s.dataset.where = 'platform=' + MD.enc(platform); s.textContent = text; return s; };
+      p.append(
+        mk(MD.int(all.videos), 'videos', MD.ALL), document.createTextNode(' роликов на ' + plats.length + ' площадках набрали '),
+        mk(MD.compact(all.views), 'views', MD.ALL), document.createTextNode(' просмотров. Больше всего — на ' + lead.platform + ': '),
+        mk(MD.compact(lead.views), 'views', lead.platform), document.createTextNode(' (' + Math.round(lead.views / all.views * 100) + '%).')
+      );
+    }
+    // tiles
+    const cur = rows.find((r) => r.platform === sel);
+    const wrow = wk.status === 'ok' ? wk.data.find((r) => r.platform === sel) : null;
+    for (const t of tiles) {
+      t.classList.remove('dash-skeleton');
+      t.dataset.where = 'platform=' + MD.enc(sel);
+      const k = t.dataset.k;
+      t.textContent = cur ? MD.compact(cur[k]) : '—';
+      const d = t.parentElement.querySelector('.md-delta');
+      d.classList.remove('md-up');
+      d.removeAttribute('data-source'); d.removeAttribute('data-field'); d.removeAttribute('data-where');
+      if (wrow && wrow[k] != null) {
+        d.dataset.source = 'week'; d.dataset.field = k; d.dataset.where = 'platform=' + MD.enc(sel);
+        d.textContent = MD.signed(wrow[k]) + ' с ' + MD.date(wrow.since);
+        if (wrow[k] > 0) d.classList.add('md-up');
+      } else {
+        d.textContent = wk.status === 'ok' ? 'Изменение появится после следующего обновления' : '';
+      }
+    }
+  });
+</script>
+
+<script>
+  // Views by platform: horizontal bars
+  dash.onData(() => {
+    const el = document.getElementById('split');
+    const bp = dash.data('by_platform');
+    if (bp.status === 'error') return MD.fail(el);
+    if (bp.status !== 'ok') return el.replaceChildren();
+    const rows = bp.data.filter((r) => r.platform !== MD.ALL).sort((a, b) => b.views - a.views);
+    const total = d3.sum(rows, (r) => r.views) || 1;
+    const sel = MD.sel();
+    const W = Math.max(260, el.clientWidth), rowH = 56, H = rows.length * rowH + 4;
+    el.replaceChildren();
+    const svg = d3.select(el).append('svg').attr('width', '100%').attr('viewBox', `0 0 ${W} ${H}`);
+    const maxV = d3.max(rows, (r) => r.views) || 1;
+    const x = d3.scaleLinear([0, maxV], [0, W]);
+    const g = svg.selectAll('g').data(rows).join('g').attr('transform', (d, i) => `translate(0,${i * rowH})`)
+      .attr('opacity', (d) => sel === MD.ALL || d.platform === sel ? 1 : 0.35);
+    g.append('text').attr('x', 0).attr('y', 14).attr('fill', 'var(--color-fg)').attr('font-size', 13).text((d) => d.platform);
+    g.append('text').attr('x', W).attr('y', 14).attr('text-anchor', 'end').attr('fill', 'var(--color-fg-muted)').attr('font-size', 12)
+      .text((d) => MD.compact(d.views) + ' · ' + Math.round(d.views / total * 100) + '% · ' + MD.int(d.videos) + ' роликов');
+    g.append('rect').attr('x', 0).attr('y', 22).attr('height', 22).attr('rx', 4).attr('fill', 'var(--cds-chart-grid)').attr('width', W);
+    g.append('rect').attr('x', 0).attr('y', 22).attr('height', 22).attr('rx', 4).attr('fill', (d) => MD.color(d.platform)).attr('width', (d) => Math.max(2, x(d.views)));
+    // Shrink the right label if it would meet the platform name
+    g.each(function () {
+      const ts = this.querySelectorAll('text');
+      if (ts[0].getComputedTextLength() + ts[1].getComputedTextLength() + 12 > W) ts[1].textContent = ts[1].textContent.split(' · ')[0];
+    });
+  });
+</script>
+
+<script>
+  // Trend over snapshots: one line per platform
+  dash.onData(() => {
+    const el = document.getElementById('trend');
+    const tr = dash.data('trend_all');
+    if (tr.status === 'error') return MD.fail(el);
+    if (tr.status !== 'ok') return el.replaceChildren();
+    const sel = MD.sel();
+    const plats = sel === MD.ALL ? MD.PLATFORMS : [sel];
+    const rows = tr.data.filter((r) => plats.includes(r.platform));
+    const dates = [...new Set(rows.map((r) => r.snapshot))].sort();
+    if (dates.length < 2) {
+      MD.empty(el, dates.length ? 'Пока одна точка — ' + MD.date(dates[0]) + '. Линия появится после следующего еженедельного обновления (2 ноября).' : 'Нет данных');
+      return;
+    }
+    el.replaceChildren();
+    const W = Math.max(280, el.clientWidth), H = Math.round(Math.min(340, Math.max(220, W * 0.2)));
+    const parse = (s) => new Date(s + 'T00:00:00');
+    // One line per series: each platform's weekly snapshots, plus YouTube's monthly history from Studio drawn dashed
+    const series = d3.groups([...rows].sort((a, b) => (a.snapshot < b.snapshot ? -1 : a.snapshot > b.snapshot ? 1 : 0)), (r) => r.series || r.platform)
+      .filter(([, rs]) => MD.PLATFORMS.includes(rs[0].platform))
+      .map(([name, rs]) => [name, rs, rs[0].platform, /Studio/.test(name)]);
+    // All platforms share a zero-based scale; a single platform zooms in so its weekly growth is visible
+    const yMax = d3.max(rows, (r) => r.views) || 1, yMinRaw = d3.min(rows, (r) => r.views) || 0;
+    const yMin = sel === MD.ALL ? 0 : Math.max(0, yMinRaw - (yMax - yMinRaw) * 0.25 - yMax * 0.002);
+    const y = d3.scaleLinear([yMin, yMax], [H - 24, 8]).nice();
+    const svg = d3.select(el).append('svg').attr('width', '100%').attr('viewBox', `0 0 ${W} ${H}`);
+    // measure left margin from widest tick
+    const ticks = y.ticks(4);
+    const probe = svg.append('text').attr('font-size', 11);
+    const leftM = d3.max(ticks, (t) => { probe.text(MD.compact(t)); return probe.node().getComputedTextLength(); }) + 8;
+    probe.remove();
+    const endLabels = series.map(([p, rs]) => p + ' ' + MD.compact(rs[rs.length - 1].views));
+    const probe2 = svg.append('text').attr('font-size', 11);
+    const rightM = d3.max(endLabels, (t) => { probe2.text(t); return probe2.node().getComputedTextLength(); }) + 10;
+    probe2.remove();
+    const x = d3.scaleUtc([parse(dates[0]), parse(dates[dates.length - 1])], [leftM, Math.max(leftM + 60, W - rightM)]);
+    svg.append('g').selectAll('line').data(ticks).join('line').attr('x1', leftM).attr('x2', x.range()[1]).attr('y1', y).attr('y2', y).attr('stroke', 'var(--cds-chart-grid)');
+    svg.append('g').selectAll('text').data(ticks).join('text').attr('x', leftM - 6).attr('y', y).attr('dy', '0.32em').attr('text-anchor', 'end').attr('font-size', 11).attr('fill', 'var(--color-fg-muted)').text(MD.compact);
+    const xt = dates.length <= 6 ? dates.map(parse) : x.ticks(Math.max(2, Math.floor((x.range()[1] - leftM) / 80)));
+    svg.append('g').selectAll('text').data(xt).join('text').attr('x', x).attr('y', H - 6).attr('text-anchor', 'middle').attr('font-size', 11).attr('fill', 'var(--color-fg-muted)').text(d3.timeFormat(parse(dates[dates.length - 1]) - parse(dates[0]) > 180 * 864e5 ? '%m.%Y' : '%d.%m'));
+    const line = d3.line().x((r) => x(parse(r.snapshot))).y((r) => y(r.views));
+    const ends = [];
+    for (const [name, rs, plat, dashed] of series) {
+      svg.append('path').attr('d', line(rs)).attr('fill', 'none').attr('stroke', MD.color(plat)).attr('stroke-width', 2).attr('stroke-dasharray', dashed ? '5 4' : null).attr('stroke-linecap', dashed ? 'butt' : 'round').attr('stroke-linejoin', 'round');
+      if (!dashed) svg.append('g').selectAll('circle').data(rs).join('circle').attr('cx', (r) => x(parse(r.snapshot))).attr('cy', (r) => y(r.views)).attr('r', 3).attr('fill', MD.color(plat));
+      const last = rs[rs.length - 1];
+      ends.push({ p: plat, y: y(last.views), text: name + ' ' + MD.compact(last.views) });
+    }
+    ends.sort((a, b) => a.y - b.y);
+    for (let i = 1; i < ends.length; i++) if (ends[i].y - ends[i - 1].y < 14) ends[i].y = ends[i - 1].y + 14;
+    svg.append('g').selectAll('text').data(ends).join('text').attr('x', x.range()[1] + 6).attr('y', (d) => d.y).attr('dy', '0.32em').attr('font-size', 11).attr('fill', (d) => MD.color(d.p)).text((d) => d.text);
+    // tooltip
+    const tip = MD.tip(el);
+    const rule = svg.append('line').attr('y1', 8).attr('y2', H - 24).attr('stroke', 'var(--cds-chart-axis)').attr('opacity', 0);
+    svg.append('rect').attr('x', leftM).attr('y', 0).attr('width', x.range()[1] - leftM).attr('height', H).attr('fill', 'transparent')
+      .on('mousemove', (event) => {
+        const [mx] = d3.pointer(event);
+        const d = dates.reduce((a, b) => Math.abs(x(parse(b)) - mx) < Math.abs(x(parse(a)) - mx) ? b : a);
+        rule.attr('x1', x(parse(d))).attr('x2', x(parse(d))).attr('opacity', 1);
+        MD.showTip(el, tip, event, MD.date(d), series.map(([name, rs, plat]) => { const r = rs.find((q) => q.snapshot === d); return [MD.color(plat), name, r ? MD.int(r.views) : '—']; }).filter((l) => l[2] !== '—'));
+      })
+      .on('mouseleave', () => { tip.hidden = true; rule.attr('opacity', 0); });
+  });
+</script>
+
+<script>
+  // Horizontal bar list (top 10)
+  MD.barList = (el, items, valueOf, labelOf, fmtValue, tipHead) => {
+    el.replaceChildren();
+    const W = Math.max(280, el.clientWidth), rowH = 40, H = items.length * rowH;
+    const svg = d3.select(el).append('svg').attr('width', '100%').attr('viewBox', `0 0 ${W} ${H}`);
+    const probe = svg.append('text').attr('font-size', 12);
+    const valW = d3.max(items, (d) => { probe.text(fmtValue(valueOf(d))); return probe.node().getComputedTextLength(); }) + 8;
+    probe.remove();
+    const x = d3.scaleLinear([0, d3.max(items, valueOf) || 1], [0, W - valW]);
+    const g = svg.selectAll('g').data(items).join('g').attr('transform', (d, i) => `translate(0,${i * rowH})`);
+    g.append('text').attr('x', 0).attr('y', 13).attr('font-size', 12).attr('fill', 'var(--color-fg)').text((d) => labelOf(d))
+      .each(function () {
+        const max = W - 4; let t = this.textContent;
+        while (this.getComputedTextLength() > max && t.length > 8) { t = t.slice(0, -2); this.textContent = t.trimEnd() + '…'; }
+      });
+    g.append('rect').attr('x', 0).attr('y', 20).attr('height', 12).attr('rx', 4).attr('fill', (d) => MD.color(d.platform)).attr('width', (d) => Math.max(2, x(valueOf(d))));
+    g.append('text').attr('x', (d) => x(valueOf(d)) + 6).attr('y', 30).attr('font-size', 12).attr('fill', 'var(--color-fg-muted)').text((d) => fmtValue(valueOf(d)));
+    const tip = MD.tip(el);
+    g.append('rect').attr('x', 0).attr('y', 0).attr('width', W).attr('height', rowH).attr('fill', 'transparent')
+      .on('mousemove', (event, d) => MD.showTip(el, tip, event, d.platform + ' · ' + MD.date(d.published), [[null, labelOf(d), ''], [MD.color(d.platform), tipHead, MD.int(valueOf(d))]]))
+      .on('mouseleave', () => { tip.hidden = true; });
+  };
+
+  dash.onData(() => {
+    const el = document.getElementById('top');
+    const v = dash.data('videos');
+    if (v.status === 'error') return MD.fail(el);
+    if (v.status !== 'ok') return el.replaceChildren();
+    const sel = MD.sel();
+    document.getElementById('top-note').textContent = sel === MD.ALL ? 'За всё время, все площадки' : 'За всё время, ' + sel;
+    const items = v.data.filter((r) => sel === MD.ALL || r.platform === sel).map((r) => ({ ...r, views: Number(r.views) || 0 }))
+      .sort((a, b) => b.views - a.views).slice(0, 10);
+    if (!items.length) return MD.empty(el, 'Нет роликов');
+    MD.barList(el, items, (d) => d.views, (d) => d.title, MD.compact, 'Просмотры');
+  });
+
+  dash.onData(() => {
+    const el = document.getElementById('growth');
+    const g = dash.data('growth'), v = dash.data('videos');
+    if (g.status === 'error' || v.status === 'error') return MD.fail(el);
+    if (g.status !== 'ok' || v.status !== 'ok') return el.replaceChildren();
+    const sel = MD.sel();
+    const have = MD.PLATFORMS.filter((p) => g.data.some((r) => r.platform === p));
+    const missing = MD.PLATFORMS.filter((p) => !have.includes(p) && (sel === MD.ALL || sel === p));
+    document.getElementById('growth-note').textContent = 'Прирост просмотров за неделю' +
+      (have.includes('VK Видео') && g.data.some((r) => r.platform === 'VK Видео' && r.since === '2026-10-21') && (sel === MD.ALL || sel === 'VK Видео') ? '. VK — по выгрузке из VK Видео за 21–27 октября' : '') +
+      (missing.length ? '. ' + missing.join(' и ') + ' — после следующего еженедельного обновления' : '');
+    if (!g.data.length) return MD.empty(el, 'Появится после следующего еженедельного обновления: нужны две точки, чтобы посчитать прирост.');
+    const byKey = new Map(v.data.map((r) => [r.platform + '|' + r.id, r]));
+    const items = g.data.filter((r) => sel === MD.ALL || r.platform === sel)
+      .map((r) => ({ ...(byKey.get(r.platform + '|' + r.id) || {}), platform: r.platform, id: r.id, views_week: Number(r.views_week) || 0 }))
+      .filter((r) => r.title).sort((a, b) => b.views_week - a.views_week).slice(0, 10);
+    if (!items.length) return MD.empty(el, 'Нет роликов');
+    MD.barList(el, items, (d) => d.views_week, (d) => d.title, (n) => MD.signed(n), 'Прирост');
+  });
+</script>
+
+<script>
+  // Table of all videos
+  (() => {
+    const tbl = document.getElementById('tbl');
+    const tbody = tbl.querySelector('tbody');
+    const q = document.getElementById('q');
+    const count = document.getElementById('count');
+    let sortCol = 'views', sortDir = -1;
+    const numeric = new Set(['views', 'likes', 'comments', 'views_week']);
+    tbl.querySelectorAll('th').forEach((th) => th.querySelector('button').addEventListener('click', () => {
+      const c = th.dataset.col;
+      if (sortCol === c) sortDir = -sortDir; else { sortCol = c; sortDir = numeric.has(c) || c === 'published' ? -1 : 1; }
+      draw();
+    }));
+    q.addEventListener('input', () => draw());
+    function draw() {
+      const v = dash.data('videos'), g = dash.data('growth');
+      tbl.querySelectorAll('th').forEach((th) => th.dataset.col === sortCol ? th.setAttribute('aria-sort', sortDir > 0 ? 'ascending' : 'descending') : th.removeAttribute('aria-sort'));
+      if (v.status !== 'ok') { tbody.replaceChildren(); count.textContent = ''; return; }
+      const sel = MD.sel();
+      const growth = new Map(g.status === 'ok' ? g.data.map((r) => [r.platform + '|' + r.id, Number(r.views_week)]) : []);
+      const needle = q.value.trim().toLowerCase();
+      let rows = v.data.filter((r) => (sel === MD.ALL || r.platform === sel) && (!needle || String(r.title).toLowerCase().includes(needle)))
+        .map((r) => ({ ...r, views: Number(r.views) || 0, likes: Number(r.likes) || 0, comments: Number(r.comments) || 0, views_week: growth.get(r.platform + '|' + r.id) }));
+      rows.sort((a, b) => {
+        const A = a[sortCol], B = b[sortCol];
+        if (A == null && B == null) return 0; if (A == null) return 1; if (B == null) return -1;
+        return (numeric.has(sortCol) ? A - B : String(A).localeCompare(String(B), 'ru')) * sortDir;
+      });
+      count.textContent = MD.int(rows.length) + ' роликов';
+      const frag = document.createDocumentFragment();
+      for (const r of rows) {
+        const tr = document.createElement('tr');
+        tr.dataset.key = MD.enc(r.platform) + ',' + MD.enc(r.id);
+        const td = (text, cls) => { const c = document.createElement('td'); if (cls) c.className = cls; if (text instanceof Node) c.append(text); else c.textContent = text; tr.append(c); return c; };
+        const pl = document.createElement('span'); pl.className = 'md-pl';
+        const dot = document.createElement('span'); dot.className = 'md-dot'; dot.style.background = MD.color(r.platform);
+        pl.append(dot, document.createTextNode(r.platform));
+        td(pl);
+        const url = String(r.url || '');
+        if (/^https:\/\//.test(url)) { const a = document.createElement('a'); a.textContent = r.title; a.setAttribute('href', url); a.setAttribute('target', '_blank'); a.setAttribute('rel', 'noopener'); td(a, 'md-title'); }
+        else td(r.title, 'md-title');
+        td(MD.date(r.published), 'md-hide-narrow');
+        td(MD.int(r.views), 'md-num');
+        td(MD.int(r.likes), 'md-num md-hide-narrow');
+        td(MD.int(r.comments), 'md-num md-hide-narrow');
+        td(r.views_week == null ? '—' : MD.signed(r.views_week), 'md-num');
+        frag.append(tr);
+      }
+      tbody.replaceChildren(frag);
+    }
+    dash.onData(draw);
+  })();
+</script>
+
+</div>
+<footer class="site-footer">
+  <span id="site-updated"></span> · Обновляется по понедельникам. Источники: открытые данные YouTube, Rutube и VK Видео, выгрузки YouTube Studio и VK Видео.
+</footer>
+</body>
+</html>
