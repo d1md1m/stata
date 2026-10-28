@@ -445,7 +445,7 @@
       t.classList.remove('dash-skeleton');
       t.dataset.where = 'platform=' + MD.enc(sel);
       const k = t.dataset.k;
-      t.textContent = cur ? (k === 'views' ? MD.mln(cur[k]) : MD.int(cur[k])) : '—';
+      t.textContent = cur ? (k === 'views' || k === 'likes' ? MD.mln(cur[k]) : MD.int(cur[k])) : '—';
       const d = t.parentElement.querySelector('.md-delta');
       d.classList.remove('md-up');
       d.removeAttribute('data-source'); d.removeAttribute('data-field'); d.removeAttribute('data-where');
