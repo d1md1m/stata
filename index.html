@@ -125,7 +125,9 @@
   .md-head p { margin: 0; color: var(--color-fg-muted); font-size: var(--cds-font-size-body); max-width: 60rem; }
   .md-head b { font-weight: var(--cds-font-weight-medium); color: var(--color-fg); }
   .md-filter { display: flex; flex-wrap: wrap; gap: var(--cds-gap-xs); }
-  .md-filters { display: flex; flex-direction: column; gap: var(--cds-gap-sm); }
+  .md-filters { display: flex; flex-direction: column; gap: var(--cds-gap-sm); position: sticky; top: 0; z-index: 5; background: var(--color-bg); padding: var(--cds-pad-sm) 0; margin: calc(-1 * var(--cds-pad-sm)) 0; box-shadow: 0 0 0 100vmax var(--color-bg); clip-path: inset(0 -100vmax); }
+  .md-filters.is-stuck { box-shadow: 0 0 0 100vmax var(--color-bg), 0 1px 0 100vmax var(--color-border-line); clip-path: inset(0 -100vmax -1px); }
+  .md-stick-sentinel { height: 0; margin-bottom: calc(-1 * var(--cds-gap-lg)); }
   .md-chip { font: inherit; font-size: var(--cds-font-size-caption); padding: var(--cds-pad-xs) var(--cds-pad-md); border-radius: 999px; border: 1px solid var(--color-border-line); background: var(--color-panel); color: var(--color-fg); cursor: pointer; display: inline-flex; align-items: center; gap: var(--cds-gap-xs); }
   .md-chip[aria-pressed="true"] { background: var(--color-fg); color: var(--color-bg); border-color: var(--color-fg); }
   .md-dot { width: .5rem; height: .5rem; border-radius: 50%; display: inline-block; }
@@ -175,7 +177,8 @@
     </p>
   </div>
 
-  <div class="md-filters">
+  <div class="md-stick-sentinel" id="filters-sentinel"></div>
+  <div class="md-filters" id="filters">
     <div class="md-filter" id="platform-filter" role="group" aria-label="Площадка"></div>
     <div class="md-filter" id="period-filter" role="group" aria-label="Период"></div>
   </div>
@@ -488,6 +491,9 @@
         box.append(b);
       }
     }
+    // Filters stay pinned to the top while scrolling; a hairline shows once they are stuck
+    const fbar = document.getElementById('filters'), sent = document.getElementById('filters-sentinel');
+    if (fbar && sent && 'IntersectionObserver' in window) new IntersectionObserver(([e]) => fbar.classList.toggle('is-stuck', !e.isIntersecting && e.boundingClientRect.top < 0)).observe(sent);
     const pbox = document.getElementById('period-filter');
     if (pbox) for (const [id, name] of MD.PERIODS) {
       const b = document.createElement('button');
