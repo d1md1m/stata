@@ -158,6 +158,9 @@
   .md-table th { position: sticky; top: 0; background: var(--color-panel); text-align: left; font-weight: var(--cds-font-weight-medium); border-bottom: 1px solid var(--color-border-line); padding: 0; white-space: nowrap; z-index: 1; }
   .md-table th button { font: inherit; color: var(--color-fg-muted); background: none; border: 0; padding: var(--cds-pad-xs) var(--cds-pad-sm); cursor: pointer; width: 100%; text-align: inherit; }
   .md-table th[aria-sort] button { color: var(--color-fg); }
+  .md-table th[aria-sort] button::after { display: inline-block; margin-left: 4px; font-size: 0.95em; line-height: 1; }
+  .md-table th[aria-sort="ascending"] button::after { content: "↑"; }
+  .md-table th[aria-sort="descending"] button::after { content: "↓"; }
   .md-table th.md-num, .md-table td.md-num { text-align: right; }
   .md-table td { padding: var(--cds-pad-xs) var(--cds-pad-sm); border-bottom: 1px solid var(--color-border-line); vertical-align: top; }
   .md-table td.md-title { min-width: 16rem; }
