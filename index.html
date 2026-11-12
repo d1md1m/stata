@@ -195,7 +195,7 @@
 
   <section class="md-card" id="split-card">
     <div class="md-ct">Просмотры по площадкам</div>
-    <div class="md-note" id="split-note">Сумма просмотров всех роликов Мединского на каждой площадке</div>
+    <div class="md-note" id="split-note">Сумма просмотров всех роликов на каждой площадке</div>
     <div class="md-chart md-chart-auto" id="split" data-source="period_platform"></div>
   </section>
 
@@ -577,7 +577,7 @@
     const per = MD.per();
     const rows = pp.data.filter((r) => r.period === per && r.platform !== MD.ALL).sort((a, b) => b.views - a.views);
     const note = document.getElementById('split-note');
-    if (note) note.textContent = per === 'all' ? 'Сумма просмотров всех роликов Мединского на каждой площадке'
+    if (note) note.textContent = per === 'all' ? 'Сумма просмотров всех роликов на каждой площадке'
       : 'Сколько просмотров набрали ролики на каждой площадке с ' + MD.date(rows[0] && rows[0].since) + ' по ' + MD.date(rows[0] && rows[0].until);
     const total = d3.sum(rows, (r) => r.views) || 1;
     const sel = MD.sel();
