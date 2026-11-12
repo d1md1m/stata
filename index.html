@@ -254,9 +254,9 @@
   MD.enc = (s) => encodeURIComponent(String(s));
   MD.sel = () => dash.params().platform || MD.ALL;
   // Period: [id, name, days]
-  MD.PERIODS = [['week', 'За неделю', 7], ['month', 'За месяц', 30], ['year', 'За год', 365], ['all', 'За всё время', 0]];
+  MD.PERIODS = [['all', 'За всё время', 0], ['week', 'За неделю', 7], ['month', 'За месяц', 30], ['year', 'За год', 365]];
   MD.per = () => { const p = dash.params().period; return MD.PERIODS.some((x) => x[0] === p) ? p : 'all'; };
-  MD.perName = (p) => (MD.PERIODS.find((x) => x[0] === p) || MD.PERIODS[3])[1];
+  MD.perName = (p) => (MD.PERIODS.find((x) => x[0] === p) || MD.PERIODS[0])[1];
   MD.tileFmt = (k, n) => (k === 'views' || k === 'likes' ? MD.mln(n) : MD.int(n));
   MD.pct = (a, b) => (b ? a / b * 100 : 0).toFixed(1).replace('.', ',');
   MD.splitFmt = MD.int;
